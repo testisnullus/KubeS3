@@ -5,5 +5,10 @@ metadata:
     app.kubernetes.io/name: kubes3
     app.kubernetes.io/managed-by: kustomize
   name: s3bucket-sample
+  namespace: default
 spec:
-  # TODO(user): Add fields here
+  awsCredsSecretRef:
+    name: aws-s3-secret
+    namespace: default
+  bucketName: s3-operator-test-bucket-1
+  region: eu-central-1

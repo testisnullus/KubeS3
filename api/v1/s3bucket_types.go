@@ -17,7 +17,10 @@ limitations under the License.
 package v1
 
 import (
+	"github.com/testisnullus/KubeS3/internal/models"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
@@ -35,11 +38,11 @@ type S3BucketSpec struct {
 
 	AWSCredsSecretRef SecretRef `json:"awsCredsSecretRef"`
 	BucketName        string    `json:"bucketName"`
+	Region            string    `json:"region"`
 }
 
 // S3BucketStatus defines the observed state of S3Bucket.
 type S3BucketStatus struct {
-	BucketStatus string `json:"bucketStatus"`
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 }
@@ -67,4 +70,10 @@ type S3BucketList struct {
 
 func init() {
 	SchemeBuilder.Register(&S3Bucket{}, &S3BucketList{})
+}
+
+func (b *S3Bucket) NewPatch() client.Patch {
+	old := b.DeepCopy()
+	old.Annotations[models.StateAnnotation] = ""
+	return client.MergeFrom(old)
 }
