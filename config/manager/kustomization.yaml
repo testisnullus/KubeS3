@@ -5,4 +5,4 @@ kind: Kustomization
 images:
 - name: controller
   newName: danilamaster/s3
-  newTag: v1.11
+  newTag: v1.13
